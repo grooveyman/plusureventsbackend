@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verify Your Email</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=DM+Sans:wght@300;400;500&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #0c0c0f;
+      font-family: 'DM Sans', sans-serif;
+      color: #e8e6e1;
+      padding: 40px 20px;
+    }
+
+    .wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      padding: 48px 40px 36px;
+      background: linear-gradient(135deg, #13131a 0%, #1a1a26 100%);
+      border-radius: 20px 20px 0 0;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-bottom: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: 50%;
+      transform: translateX(-50%);
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .logo-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px; height: 56px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 16px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35);
+    }
+
+    .logo-mark svg {
+      width: 28px; height: 28px;
+      fill: white;
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 300;
+      letter-spacing: -0.5px;
+      color: #f0ede8;
+      line-height: 1.2;
+    }
+
+    .header h1 span {
+      font-weight: 600;
+      background: linear-gradient(90deg, #818cf8, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* Body */
+    .body {
+      background: #111118;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-top: none;
+      border-bottom: none;
+      padding: 40px;
+    }
+
+    .greeting {
+      font-size: 15px;
+      color: #9492a0;
+      font-weight: 300;
+      margin-bottom: 16px;
+      letter-spacing: 0.3px;
+    }
+
+    .greeting strong {
+      color: #e8e6e1;
+      font-weight: 500;
+    }
+
+    .message {
+      font-size: 15px;
+      color: #7c7a88;
+      line-height: 1.8;
+      margin-bottom: 36px;
+      font-weight: 300;
+    }
+
+    /* Token Box */
+    .token-box {
+      background: linear-gradient(135deg, #13131a, #1a1a26);
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .token-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.5), transparent);
+    }
+
+    .token-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #6366f1;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .cta-button {
+      display: block;
+      width: 100%;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 500;
+      text-align: center;
+      letter-spacing: 0.3px;
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .expiry-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      font-size: 12px;
+      color: #4f4d5a;
+    }
+
+    .expiry-note svg {
+      width: 14px; height: 14px;
+      fill: none;
+      stroke: #4f4d5a;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+    }
+
+    /* Divider */
+    .divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      margin: 32px 0;
+    }
+
+    /* Security note */
+    .security-note {
+      background: rgba(245, 158, 11, 0.06);
+      border: 1px solid rgba(245, 158, 11, 0.15);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .security-note svg {
+      width: 16px; height: 16px;
+      fill: none;
+      stroke: #f59e0b;
+      stroke-width: 1.5;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .security-note p {
+      font-size: 12.5px;
+      color: #7c7060;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* Footer */
+    .footer {
+      background: #0d0d13;
+      border: 1px solid rgba(255,255,255,0.06);
+      border-top: none;
+      border-radius: 0 0 20px 20px;
+      padding: 28px 40px;
+      text-align: center;
+    }
+
+    .footer p {
+      font-size: 12px;
+      color: #3d3b47;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .footer a {
+      color: #4f4d5a;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #6366f1;
+    }
+
+    .footer .company {
+      font-size: 13px;
+      color: #4f4d5a;
+      margin-bottom: 8px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="logo-mark">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+        </svg>
+      </div>
+      <h1>Verify your <span>email address</span></h1>
+    </div>
+
+    <!-- Body -->
+    <div class="body">
+      <p class="greeting">Hello, <strong>{{name}}</strong> 👋</p>
+      <p class="message">
+        Thank you for registering. To complete your account setup and ensure the security of your account, 
+        please verify your email address by clicking the button below.
+      </p>
+
+      <!-- CTA -->
+      <div class="token-box">
+        <p class="token-label">&#x2022; Email Verification</p>
+        <a href="{{verificationLink}}" class="cta-button">
+          Verify Email Address &rarr;
+        </a>
+        <div class="expiry-note">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          This link expires in 24 hours
+        </div>
+      </div>
+
+      <hr class="divider" />
+
+      <!-- Security Note -->
+      <div class="security-note">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <p>If you did not create an account, no action is required. You can safely ignore this email. 
+        Never share this link with anyone — our team will never ask for it.</p>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+      <p class="company">YourApp &copy; {{year}}</p>
+      <p>
+        You received this email because you registered on our platform.<br/>
+        <a href="#">Unsubscribe</a> &nbsp;&middot;&nbsp; <a href="#">Privacy Policy</a> &nbsp;&middot;&nbsp; <a href="#">Terms of Service</a>
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>
