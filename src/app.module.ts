@@ -19,6 +19,7 @@ import { MailModule } from './mail/mail.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtMiddleware } from './middleware/jwt.middleware';
 import { EmailVerificationMiddleware } from './middleware/email-verified.middleware';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
 
 @Module({
   imports: [
@@ -51,6 +52,7 @@ import { EmailVerificationMiddleware } from './middleware/email-verified.middlew
     AccountsModule,
     TransactionsModule,
     MailModule,
+    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -63,7 +65,9 @@ export class AppModule implements NestModule{
     consumer.apply(JwtMiddleware).exclude({path:'/users/(.*)', method:RequestMethod.ALL}).forRoutes('*');
 
     consumer.apply(EmailVerificationMiddleware).exclude(
-      { path: '/users/(.*)', method: RequestMethod.ALL},
+      { path: '/users/verifyEmail/(.*)', method: RequestMethod.ALL},
+      { path: '/users/', method: RequestMethod.POST},
+      { path: '/users/login', method: RequestMethod.POST}
     ).forRoutes('*');
   }
 }

@@ -8,12 +8,14 @@ import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { MailService } from '../mail/mail.service';
 
+
 @Injectable()
 export class AttendeeService {
   constructor(@Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger, @InjectRepository(Attendee) private readonly attendeeRepository: Repository<Attendee>, private readonly mailService: MailService) {
 
   }
   async create(createAttendeeDto: CreateAttendeeDto) {
+   
     //check if attendee already registered
     this.logger.log('Creating attendee', AttendeeService.name);
     if (await this.findByEmail(createAttendeeDto.email)) {
@@ -21,6 +23,7 @@ export class AttendeeService {
       throw new Error("Attendee already exists");
       
     }
+
     const attendee = this.attendeeRepository.create(createAttendeeDto);
     this.logger.log(`Registered ${createAttendeeDto.lastname} ${createAttendeeDto.firstname} successfully`, AttendeeService.name);
     //send email

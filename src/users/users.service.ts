@@ -12,6 +12,7 @@ import { ResponseHelper } from 'src/helpers/response.helper';
 import { Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class UsersService {
@@ -32,8 +33,13 @@ export class UsersService {
     const expiry = new Date();
     expiry.setHours(expiry.getHours() + 24);
     
+
+    //handle password
+    const hashedPassword = await argon2.hash(createUserDto.password);
+
     const newUser = this.userRepository.create({
       ...createUserDto,
+      password: hashedPassword,
       verifyToken: token,
       emailVerifiedExpiry: expiry,
       isEmailVerified: StatusEnum.INACTIVE
@@ -76,6 +82,12 @@ export class UsersService {
     const user = await this.userRepository.findOne({where: {email}});
 
     if(!user){
+      return {success: false, message:'Invalid credentials', status:HttpStatus.UNAUTHORIZED, data:null};
+    }
+
+    //verify password
+    const isMatch = await argon2.verify(user.password, password);
+    if(isMatch){
       return {success: false, message:'Invalid credentials', status:HttpStatus.UNAUTHORIZED, data:null};
     }
 

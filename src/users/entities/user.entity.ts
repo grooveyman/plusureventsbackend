@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Timestamp } from "../../helpers/timestamp.entity";
+import { Event } from "src/events/entities/event.entity";
 
 export enum StatusEnum{
     ACTIVE = "1",
@@ -31,4 +32,10 @@ export class User extends Timestamp {
 
     @Column({nullable: true, type: 'timestamp'})
     emailVerifiedExpiry: Date | null;
+
+    @Column({type:"varchar", length:20})
+    phone: string;
+
+    @OneToMany(() => Event, (event) => event.user)
+    events: Event[];
 }
