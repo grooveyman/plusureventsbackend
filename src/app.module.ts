@@ -20,6 +20,9 @@ import { AuthModule } from './auth/auth.module';
 import { JwtMiddleware } from './middleware/jwt.middleware';
 import { EmailVerificationMiddleware } from './middleware/email-verified.middleware';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { FieldsModule } from './fields/fields.module';
+import { FieldOptionsModule } from './field_options/field_options.module';
+import { FormAccessModule } from './form_access/form_access.module';
 
 @Module({
   imports: [
@@ -53,6 +56,9 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
     TransactionsModule,
     MailModule,
     CloudinaryModule,
+    FieldsModule,
+    FieldOptionsModule,
+    FormAccessModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -62,10 +68,10 @@ export class AppModule implements NestModule{
     consumer.apply(LoggerMiddleware).forRoutes('*');
 
     //apply jwt middleware to all routes except registration and email verification
-    consumer.apply(JwtMiddleware).exclude({path:'/users/(.*)', method:RequestMethod.ALL}).forRoutes('*');
+    consumer.apply(JwtMiddleware).exclude({path:'/users/*', method:RequestMethod.ALL}).forRoutes('*');
 
     consumer.apply(EmailVerificationMiddleware).exclude(
-      { path: '/users/verifyEmail/(.*)', method: RequestMethod.ALL},
+      { path: '/users/verifyEmail/*', method: RequestMethod.ALL},
       { path: '/users/', method: RequestMethod.POST},
       { path: '/users/login', method: RequestMethod.POST}
     ).forRoutes('*');

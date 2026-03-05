@@ -33,7 +33,7 @@ export class User extends Timestamp {
     @Column({nullable: true, type: 'timestamp'})
     emailVerifiedExpiry: Date | null;
 
-    @Column({type:"varchar", length:20})
+    @Column({type:"varchar", length:20, nullable: false, default:"0000000000"})
     phone: string;
 
     @OneToMany(() => Event, (event) => event.user)

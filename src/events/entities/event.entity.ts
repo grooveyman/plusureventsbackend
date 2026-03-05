@@ -1,6 +1,13 @@
+import { Field } from "src/fields/entities/field.entity";
+import { FormAccess } from "src/form_access/entities/form_access.entity";
 import { Timestamp } from "src/helpers/timestamp.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+
+export enum OnOffEnum{
+    on = "1",
+    off = "0"
+}
 
 @Entity({name:"events"})
 export class Event extends Timestamp {
@@ -10,6 +17,15 @@ export class Event extends Timestamp {
     //event name
     @Column({type: "varchar"})
     name: string;
+
+    @Column({type:"varchar"})
+    location: string;
+
+    @Column({type: "varchar", nullable: true})
+    description: string;
+
+    @Column({type:"boolean", default:false})
+    hasGroup: boolean;
 
     //start and end date
     @CreateDateColumn()
@@ -27,7 +43,7 @@ export class Event extends Timestamp {
     expect_attendees: number;
 
     //created by
-    @ManyToOne(() => User, (user) => user.events)
+    @ManyToOne(() => User, (user) => user.events, {nullable: false})
     @JoinColumn({name: "user_id"})
     user: User;
 
@@ -39,5 +55,11 @@ export class Event extends Timestamp {
     flyerPublicId: string;
 
     //
+    @OneToMany(() => Field, (fields) => fields.event, {nullable: true})
+    fields: Field[];
+
+    //link to form access
+    @OneToMany(() => FormAccess, (formaccess) => formaccess.event, {nullable: true})
+    form_access: FormAccess[];
 
 }

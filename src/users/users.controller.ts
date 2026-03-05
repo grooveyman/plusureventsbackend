@@ -26,7 +26,6 @@ export class UsersController {
     } catch (err: any) {
       return ResponseHelper.error(res, 'Failed to create user', HttpStatus.INTERNAL_SERVER_ERROR, err.message);
     }
-
   }
 
   @Post('/login')
@@ -39,7 +38,7 @@ export class UsersController {
     if (!result.success) {
       return ResponseHelper.error(res, result.message, result.status);
     }
-    return ResponseHelper.success(res, result.message, HttpStatus.OK);
+    return ResponseHelper.success(res, result.message, result.data, HttpStatus.OK);
   }
 
   @Get('verifyEmail/:token')

@@ -49,7 +49,7 @@ export class UsersService {
 
      //send verification email
      await this.mailService.sendVerificationEmail(newUser.email, newUser.name, token);
-    this.logger.info(`Created user with id: ${newUser.id} successfully`);
+    this.logger.log("info", `Created user with id: ${newUser.id} successfully`);
     return {success:true, message:'Created user successfully', data:newUser};
   }
 
@@ -87,7 +87,7 @@ export class UsersService {
 
     //verify password
     const isMatch = await argon2.verify(user.password, password);
-    if(isMatch){
+    if(!isMatch){
       return {success: false, message:'Invalid credentials', status:HttpStatus.UNAUTHORIZED, data:null};
     }
 
@@ -126,8 +126,8 @@ export class UsersService {
     return await this.userRepository.findOneBy({email});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    return await this.userRepository.findOneBy({id});
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

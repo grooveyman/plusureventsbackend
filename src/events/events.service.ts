@@ -3,13 +3,14 @@ import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Event } from './entities/event.entity';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import { MailService } from 'src/mail/mail.service';
 import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { ResponseHelper } from 'src/helpers/response.helper';
 import { Response } from 'express';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class EventsService {
@@ -18,11 +19,38 @@ export class EventsService {
     private readonly eventRepository: Repository<Event>,
     private readonly mailService: MailService,
     private readonly cloudinaryService: CloudinaryService,
+    private readonly usersService: UsersService,
     @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger
   ) { }
 
-  create(createEventDto: CreateEventDto) {
-    return 'This action adds a new event';
+  async create(createEventDto: CreateEventDto) {
+    //
+    //check if event exists
+    const existEvent = await this.findByName(createEventDto.name);
+    if (existEvent) {
+      return "Event exists already!";
+    }
+
+    //create event
+    const event = this.eventRepository.create({
+      name: createEventDto.name,
+      location: createEventDto.location,
+      description: createEventDto.description,
+      hasGroup: createEventDto.group,
+      start_date: createEventDto.start_date,
+      end_date: createEventDto.end_date,
+      expiry_date: createEventDto.expiry,
+      expect_attendees: createEventDto.no_attendee,
+      user: { id: createEventDto.user.id }
+    });
+
+    return await this.eventRepository.save(event);;
+  }
+
+
+
+  async findByName(name: string) {
+    return await this.eventRepository.findOneBy({ name: Like(`%${name}%`), });
   }
 
   findAll() {
