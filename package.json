@@ -6,8 +6,10 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
-    "vercel-build": "nest build",
+    "copy-certs": "cpx \"src/config/certs/**/*\" dist/config/certs",
+    "build": "nest build && npm run copy:certs",
+    "copy:certs": "mkdir -p dist/config/certs && cp src/config/certs/ca.pem dist/config/certs/ca.pem",
+    "vercel-build": "npm run build && NODE_ENV=production npx typeorm migration:run -d dist/database/data-source.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
@@ -22,10 +24,7 @@
     "export:swagger": "ts-node src/export-swagger.ts",
     "docs:publish": "npm run build && npm run export:swagger && npm run docs:copy && npm run docs:push",
     "docs:copy": "cp swagger.json docs/swagger.json",
-    "docs:push": "git add docs/swagger.json && git commit -m \"chore: update API docs\"",
-    "migration:generate": "npx ts-node -P tsconfig.migrations.json -r tsconfig-paths/register node_modules/typeorm/cli migration:generate src/migrations/InitialMigration -d src/database/data-source.ts",
-    "migration:run": "npm run build && npx typeorm migration:run -d dist/database/data-source.js",
-    "migration:revert": "npm run build && npx typeorm migration:revert -d dist/database/data-source.js"
+    "docs:push": "git add docs/swagger.json && git commit -m \"chore: update API docs\""
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -46,6 +45,7 @@
     "mysql2": "^3.18.2",
     "nest-winston": "^1.10.2",
     "nodemailer": "^8.0.1",
+    "pg": "^8.20.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^5.0.1",

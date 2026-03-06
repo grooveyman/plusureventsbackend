@@ -32,18 +32,23 @@ import { dataSourceOptions } from './database/data-source';
     }),
     WinstonModule.forRoot(winstonConfig),
     AuthModule,
-    TypeOrmModule.forRoot({
-      ...dataSourceOptions,
-      migrationsRun: true,
-      autoLoadEntities: true,
-      extra: {
-        connectionLimit: 2,
-        waitForConnections: true,
-        queueLimit: 0,
-        connectTimeout: 10000,
-        enableKeepAlive: true,
-        keepAliveInitialDelay: 10000,
-      },
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        ...dataSourceOptions,
+        migrationsRun: false,
+        autoLoadEntities: true,
+        logging: false,
+        extra: {
+          connectionLimit: 2,
+          waitForConnections: true,
+          queueLimit: 0,
+          connectTimeout: 10000,
+          enableKeepAlive: true,
+          keepAliveInitialDelay: 10000,
+        },
+
+      })
+
     }),
     AttendeeModule,
     UsersModule,
