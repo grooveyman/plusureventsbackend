@@ -1,9 +1,10 @@
-import { Field } from "src/fields/entities/field.entity";
+import { Field } from "../../fields/entities/field.entity";
+import { Timestamp } from "../../helpers/timestamp.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 @Entity({name:"field_option"})
-export class FieldOption {
+export class FieldOption extends Timestamp {
     @PrimaryGeneratedColumn()
     id: number;
 

@@ -1,6 +1,6 @@
-import { Event } from "src/events/entities/event.entity";
-import { FieldOption } from "src/field_options/entities/field_option.entity";
-import { Timestamp } from "src/helpers/timestamp.entity";
+import { Event } from "../../events/entities/event.entity";
+import { FieldOption } from "../../field_options/entities/field_option.entity";
+import { Timestamp } from "../../helpers/timestamp.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 

@@ -4,9 +4,9 @@ import { EventsController } from './events.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { MailModule } from 'src/mail/mail.module';
 import { AuthModule } from 'src/auth/auth.module';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
-import { CloudinaryModule } from 'src/cloudinary/cloudinary.module';
-import { UsersModule } from 'src/users/users.module';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
+import { CloudinaryModule } from '../cloudinary/cloudinary.module';
+import { UsersModule } from '../users/users.module';
 import { Event } from './entities/event.entity';
 
 @Module({

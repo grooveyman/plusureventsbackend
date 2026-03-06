@@ -1,7 +1,7 @@
-import { Field } from "src/fields/entities/field.entity";
-import { FormAccess } from "src/form_access/entities/form_access.entity";
-import { Timestamp } from "src/helpers/timestamp.entity";
-import { User } from "src/users/entities/user.entity";
+import { Field } from "../../fields/entities/field.entity";
+import { FormAccess } from "../../form_access/entities/form_access.entity";
+import { Timestamp } from "../../helpers/timestamp.entity";
+import { User } from "../../users/entities/user.entity";
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum OnOffEnum{

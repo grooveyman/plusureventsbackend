@@ -4,13 +4,13 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Event } from './entities/event.entity';
 import { Like, Repository } from 'typeorm';
-import { MailService } from 'src/mail/mail.service';
-import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { MailService } from '../mail/mail.service';
+import { CloudinaryService } from '../cloudinary/cloudinary.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
-import { ResponseHelper } from 'src/helpers/response.helper';
+import { ResponseHelper } from '../helpers/response.helper';
 import { Response } from 'express';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class EventsService {

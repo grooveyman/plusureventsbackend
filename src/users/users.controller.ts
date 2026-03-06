@@ -15,7 +15,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService, @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger) { }
 
 
-  @Post()
+  @Post('/create')
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User created successfully' })
   @ApiResponse({ status: 400, description: 'Bad Request' })

@@ -1,9 +1,15 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { IsArray, IsBoolean, IsNotEmpty, IsObject, IsString, ValidateNested } from "class-validator";
 
 
-interface event{
+interface event {
     id: number;
+}
+
+interface fieldOptions {
+    label: string;
+    option_value: string;
 }
 export class CreateFieldDto {
     @ApiProperty({ example: 'Surname' })
@@ -26,4 +32,17 @@ export class CreateFieldDto {
     @IsString()
     event: event;
 
+    @ApiProperty({ example: [] })
+    @IsObject()
+    fieldOptions: fieldOptions[];
+
+}
+
+export class CreateFieldsDto {
+    @ApiProperty({ type: [CreateFieldDto] })
+    @IsArray()
+    @ValidateNested({ each: true })
+    //transforms each item into CreateFieldDto
+    @Type(() => CreateFieldDto)
+    fields: CreateFieldDto[];
 }

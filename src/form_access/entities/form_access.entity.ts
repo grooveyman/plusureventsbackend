@@ -1,5 +1,5 @@
-import { Event } from "src/events/entities/event.entity";
-import { Timestamp } from "src/helpers/timestamp.entity";
+import { Event } from "../../events/entities/event.entity";
+import { Timestamp } from "../../helpers/timestamp.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:"form_access"})

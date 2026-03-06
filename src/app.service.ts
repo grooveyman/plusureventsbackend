@@ -5,7 +5,7 @@ import { Logger } from 'winston';
 @Injectable()
 export class AppService {
   constructor(@Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger){}
-  getHello(): string {
+  async getHello() {
     this.logger.log(`Server is live!`, AppService.name);
     return 'Server is live';
   }

@@ -1,0 +1,11 @@
+// tsconfig.migrations.json
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "resolvePackageJsonExports": false,
+    "outDir": "./dist"
+  },
+  "include": ["src/**/*"]
+}

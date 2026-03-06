@@ -1,11 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { CreateFieldOptionDto } from './dto/create-field_option.dto';
 import { UpdateFieldOptionDto } from './dto/update-field_option.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { FieldOption } from './entities/field_option.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class FieldOptionsService {
-  create(createFieldOptionDto: CreateFieldOptionDto) {
-    return 'This action adds a new fieldOption';
+  constructor(@InjectRepository(FieldOption) private readonly fieldOptionRespository: Repository<FieldOption>) {
+
+  }
+  async create(createFieldOptionDto: CreateFieldOptionDto) {
+    const fieldOption = this.fieldOptionRespository.create({
+      label: createFieldOptionDto.label,
+      option_value: createFieldOptionDto.option_value,
+      field: {id:createFieldOptionDto.field_id}
+    });
+
+    return await this.fieldOptionRespository.save(fieldOption);
   }
 
   findAll() {

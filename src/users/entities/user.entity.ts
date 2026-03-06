@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Timestamp } from "../../helpers/timestamp.entity";
-import { Event } from "src/events/entities/event.entity";
+import { Event } from "../../events/entities/event.entity";
 
 export enum StatusEnum{
     ACTIVE = "1",

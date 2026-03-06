@@ -4,7 +4,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { StatusEnum, User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 import { MailService } from '../mail/mail.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
@@ -29,7 +29,7 @@ export class UsersService {
     }
 
     //create token
-    const token = uuidv4();
+    const token = randomUUID();
     const expiry = new Date();
     expiry.setHours(expiry.getHours() + 24);
     

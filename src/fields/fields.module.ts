@@ -3,12 +3,14 @@ import { FieldsService } from './fields.service';
 import { FieldsController } from './fields.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Field } from './entities/field.entity';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
+import { FieldOptionsModule } from '../field_options/field_options.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([Field]),
-    AuthModule
+    AuthModule,
+    FieldOptionsModule
   ],
   controllers: [FieldsController],
   providers: [FieldsService],

@@ -1,9 +1,8 @@
 import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
 import { AttendeeModule } from './attendee/attendee.module';
 import { UsersModule } from './users/users.module';
 import { EventsModule } from './events/events.module';
@@ -23,28 +22,28 @@ import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { FieldsModule } from './fields/fields.module';
 import { FieldOptionsModule } from './field_options/field_options.module';
 import { FormAccessModule } from './form_access/form_access.module';
+import { dataSourceOptions } from './database/data-source';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env',  
+      envFilePath: '.env',
     }),
     WinstonModule.forRoot(winstonConfig),
     AuthModule,
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_NAME'),
-        entities: [join(process.cwd(), 'dist', '**', '*.entity{.ts,.js}')],
-        synchronize: true,
-      }),
+    TypeOrmModule.forRoot({
+      ...dataSourceOptions,
+      migrationsRun: true,
+      autoLoadEntities: true,
+      extra: {
+        connectionLimit: 2,
+        waitForConnections: true,
+        queueLimit: 0,
+        connectTimeout: 10000,
+        enableKeepAlive: true,
+        keepAliveInitialDelay: 10000,
+      },
     }),
     AttendeeModule,
     UsersModule,
@@ -63,17 +62,24 @@ import { FormAccessModule } from './form_access/form_access.module';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule implements NestModule{
+export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
-
-    //apply jwt middleware to all routes except registration and email verification
-    consumer.apply(JwtMiddleware).exclude({path:'/users/*', method:RequestMethod.ALL}).forRoutes('*');
-
-    consumer.apply(EmailVerificationMiddleware).exclude(
-      { path: '/users/verifyEmail/*', method: RequestMethod.ALL},
-      { path: '/users/', method: RequestMethod.POST},
-      { path: '/users/login', method: RequestMethod.POST}
-    ).forRoutes('*');
+    consumer
+      .apply(JwtMiddleware)
+      .exclude(
+        { path: '/users/(.*)', method: RequestMethod.ALL },
+        { path: '/', method: RequestMethod.GET },
+      )
+      .forRoutes('*');
+    consumer
+      .apply(EmailVerificationMiddleware)
+      .exclude(
+        { path: '/users/verifyEmail/*', method: RequestMethod.ALL },
+        { path: '/users/create', method: RequestMethod.POST },
+        { path: '/users/login', method: RequestMethod.POST },
+        { path: '/', method: RequestMethod.GET },
+      )
+      .forRoutes('*');
   }
 }
