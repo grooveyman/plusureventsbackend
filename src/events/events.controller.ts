@@ -5,30 +5,35 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import type { Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBody, ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { ResponseHelper } from 'src/helpers/response.helper';
+import { ResponseHelper } from '../helpers/response.helper';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService, @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger ) { }
+  constructor(private readonly eventsService: EventsService, @Inject(WINSTON_MODULE_NEST_PROVIDER) private readonly logger: Logger) { }
 
   @Post("create")
   @ApiOperation({ summary: 'Create a new event' })
   @ApiResponse({ status: 201, description: 'Event created successfully' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
   async create(@Res() res, @Body() createEventDto: CreateEventDto) {
-    try{
+    try {
       return ResponseHelper.success(res, "Event created successfully", await this.eventsService.create(createEventDto), HttpStatus.CREATED);
-    }catch(err:any){
-      this.logger.error('Failed to create event: '+err.message);
-      ResponseHelper.error(res, "Failed to create event", HttpStatus.INTERNAL_SERVER_ERROR);
+    } catch (err: any) {
+      this.logger.error('Failed to create event: ' + err.message);
+      ResponseHelper.error(res, "Failed to create event: " + err.message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  @Get()
-  findAll() {
-    return this.eventsService.findAll();
+  @Get('/search/:search')
+  async findAll(@Res() res, @Param('search') searchkey: string|number) {
+    try {
+      return ResponseHelper.success(res, "Event retrieved successfully", await this.eventsService.findAll(searchkey), HttpStatus.OK);
+    } catch (err: any) {
+      this.logger.error('Failed to retrieve event: ' + err.message);
+      ResponseHelper.error(res, "Failed to retrieve event: " + err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
   }
 
   @Get(':id')

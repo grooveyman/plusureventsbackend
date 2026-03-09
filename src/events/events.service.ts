@@ -28,7 +28,8 @@ export class EventsService {
     //check if event exists
     const existEvent = await this.findByName(createEventDto.name);
     if (existEvent) {
-      return "Event exists already!";
+      this.logger.error(`Event with this name already exists`);
+      throw new Error("Event with this name already exists");
     }
 
     //create event
@@ -53,8 +54,33 @@ export class EventsService {
     return await this.eventRepository.findOneBy({ name: Like(`%${name}%`), });
   }
 
-  findAll() {
-    return `This action returns all events`;
+  async findAll(name: string | number) {
+    let events: any;
+    const isId = typeof name === 'number' || !isNaN(Number(name));
+    if (isId) {
+      events = await this.eventRepository.findOne({
+        where: { id: Number(name) },
+        relations: {
+          fields: {
+            field_options: true
+          }
+        }
+      });
+    } else {
+      events = await this.eventRepository.findOne({
+        where: { name: Like(`%${name}`) },
+        relations: {
+          fields: {
+            field_options: true
+          }
+        }
+      });
+    }
+    if (!events || events.length === 0) {
+      this.logger.error(`Failed to find event.`);
+      throw new Error(`Did not find event ${name}`);
+    }
+    return events;
   }
 
   findOne(id: number) {
