@@ -15,7 +15,7 @@
         ]
       }
     },
-    "/api/v1/attendee": {
+    "/api/v1/attendee/register": {
       "post": {
         "operationId": "AttendeeController_create",
         "parameters": [],
@@ -31,13 +31,19 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Attendee created successfully!"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         },
+        "summary": "Register an attendee",
         "tags": [
           "Attendee"
         ]
-      },
+      }
+    },
+    "/api/v1/attendee": {
       "get": {
         "operationId": "AttendeeController_findAll",
         "parameters": [],
@@ -1355,6 +1361,236 @@
           "FormAccess"
         ]
       }
+    },
+    "/api/v1/registrations/register": {
+      "post": {
+        "operationId": "RegistrationsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRegistrationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      }
+    },
+    "/api/v1/registrations": {
+      "get": {
+        "operationId": "RegistrationsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      }
+    },
+    "/api/v1/registrations/{id}": {
+      "get": {
+        "operationId": "RegistrationsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      },
+      "patch": {
+        "operationId": "RegistrationsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRegistrationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      },
+      "delete": {
+        "operationId": "RegistrationsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      }
+    },
+    "/api/v1/attendee-group/register": {
+      "post": {
+        "operationId": "AttendeeGroupController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAttendeeGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registered group attendance successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "summary": "Register group attendee",
+        "tags": [
+          "AttendeeGroup"
+        ]
+      }
+    },
+    "/api/v1/attendee-group": {
+      "get": {
+        "operationId": "AttendeeGroupController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "AttendeeGroup"
+        ]
+      }
+    },
+    "/api/v1/attendee-group/{id}": {
+      "get": {
+        "operationId": "AttendeeGroupController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "AttendeeGroup"
+        ]
+      },
+      "patch": {
+        "operationId": "AttendeeGroupController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAttendeeGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "AttendeeGroup"
+        ]
+      },
+      "delete": {
+        "operationId": "AttendeeGroupController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "AttendeeGroup"
+        ]
+      }
     }
   },
   "info": {
@@ -1381,7 +1617,40 @@
     "schemas": {
       "CreateAttendeeDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "lastname": {
+            "type": "string",
+            "example": "Johnson"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Kelvin"
+          },
+          "email": {
+            "type": "string",
+            "example": "example@gmail.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "2022222222"
+          },
+          "residence": {
+            "type": "string",
+            "example": "Legon, Accra"
+          },
+          "firstTime": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "lastname",
+          "firstname",
+          "email",
+          "phone",
+          "residence",
+          "firstTime"
+        ]
       },
       "UpdateAttendeeDto": {
         "type": "object",
@@ -1561,6 +1830,112 @@
       "UpdateFormAccessDto": {
         "type": "object",
         "properties": {}
+      },
+      "CreateRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "number",
+            "example": 2
+          },
+          "responses": {
+            "type": "object",
+            "example": {
+              "1": "John Doe",
+              "2": "john@email.com",
+              "3": "M"
+            },
+            "description": "Key is field_id, value is the response"
+          }
+        },
+        "required": [
+          "event_id",
+          "responses"
+        ]
+      },
+      "UpdateRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "number",
+            "example": 2
+          },
+          "responses": {
+            "type": "object",
+            "example": {
+              "1": "John Doe",
+              "2": "john@email.com",
+              "3": "M"
+            },
+            "description": "Key is field_id, value is the response"
+          }
+        }
+      },
+      "CreateAttendeeGroupDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": ""
+          },
+          "address": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_name": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_phone": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_email": {
+            "type": "string",
+            "example": ""
+          },
+          "number_heads": {
+            "type": "number",
+            "example": ""
+          }
+        },
+        "required": [
+          "name",
+          "address",
+          "contact_person_name",
+          "contact_person_phone",
+          "contact_person_email",
+          "number_heads"
+        ]
+      },
+      "UpdateAttendeeGroupDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": ""
+          },
+          "address": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_name": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_phone": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_email": {
+            "type": "string",
+            "example": ""
+          },
+          "number_heads": {
+            "type": "number",
+            "example": ""
+          }
+        }
       }
     }
   }
