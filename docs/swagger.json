@@ -126,7 +126,7 @@
         ]
       }
     },
-    "/users": {
+    "/users/create": {
       "post": {
         "operationId": "UsersController_create",
         "parameters": [],
@@ -149,27 +149,6 @@
           }
         },
         "summary": "Create a new user",
-        "tags": [
-          "Users"
-        ]
-      },
-      "get": {
-        "operationId": "UsersController_findAll",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Users retrieved successfully"
-          },
-          "404": {
-            "description": "No records found"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Get all users",
         "tags": [
           "Users"
         ]
@@ -221,6 +200,29 @@
             "description": ""
           }
         },
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/users": {
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Users retrieved successfully"
+          },
+          "404": {
+            "description": "No records found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all users",
         "tags": [
           "Users"
         ]
@@ -301,7 +303,7 @@
         ]
       }
     },
-    "/events": {
+    "/events/create": {
       "post": {
         "operationId": "EventsController_create",
         "parameters": [],
@@ -317,13 +319,19 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Event created successfully"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         },
+        "summary": "Create a new event",
         "tags": [
           "Events"
         ]
-      },
+      }
+    },
+    "/events/search/{search}": {
       "get": {
         "operationId": "EventsController_findAll",
         "parameters": [],
@@ -404,6 +412,45 @@
         ],
         "responses": {
           "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/events/uploadProfilePicture": {
+      "post": {
+        "operationId": "EventsController_uploadProfilePicture",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
             "description": ""
           }
         },
@@ -966,6 +1013,348 @@
           "Transactions"
         ]
       }
+    },
+    "/fields/create": {
+      "post": {
+        "operationId": "FieldsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Form field created successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "summary": "Create a new field",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields": {
+      "get": {
+        "operationId": "FieldsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/fields/{id}": {
+      "get": {
+        "operationId": "FieldsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Fields"
+        ]
+      },
+      "patch": {
+        "operationId": "FieldsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFieldDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Fields"
+        ]
+      },
+      "delete": {
+        "operationId": "FieldsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/field-options": {
+      "post": {
+        "operationId": "FieldOptionsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFieldOptionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      },
+      "get": {
+        "operationId": "FieldOptionsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      }
+    },
+    "/field-options/{id}": {
+      "get": {
+        "operationId": "FieldOptionsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      },
+      "patch": {
+        "operationId": "FieldOptionsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFieldOptionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      },
+      "delete": {
+        "operationId": "FieldOptionsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      }
+    },
+    "/form-access": {
+      "post": {
+        "operationId": "FormAccessController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFormAccessDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      },
+      "get": {
+        "operationId": "FormAccessController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      }
+    },
+    "/form-access/{id}": {
+      "get": {
+        "operationId": "FormAccessController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      },
+      "patch": {
+        "operationId": "FormAccessController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFormAccessDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      },
+      "delete": {
+        "operationId": "FormAccessController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      }
     }
   },
   "info": {
@@ -1030,7 +1419,55 @@
       },
       "CreateEventDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "IYES 2026"
+          },
+          "location": {
+            "type": "string",
+            "example": "UPSA Auditorium, Accra"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is the most influential youth program"
+          },
+          "group": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "start_date": {
+            "type": "string",
+            "example": "2026-03-12"
+          },
+          "end_date": {
+            "type": "string",
+            "example": "2026-03-14"
+          },
+          "expiry": {
+            "type": "string",
+            "example": "2026-03-14"
+          },
+          "no_attendee": {
+            "type": "number",
+            "example": "2000"
+          },
+          "user": {
+            "type": "object",
+            "example": ""
+          }
+        },
+        "required": [
+          "name",
+          "location",
+          "description",
+          "group",
+          "start_date",
+          "end_date",
+          "expiry",
+          "no_attendee",
+          "user"
+        ]
       },
       "UpdateEventDto": {
         "type": "object",
@@ -1073,6 +1510,50 @@
         "properties": {}
       },
       "UpdateTransactionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateFieldDto": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "example": "Surname"
+          },
+          "field_type": {
+            "type": "string",
+            "example": "text"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "example": true
+          },
+          "event": {
+            "type": "object",
+            "example": "Surname"
+          },
+          "fieldOptions": {
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateFieldOptionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateFieldOptionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateFormAccessDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateFormAccessDto": {
         "type": "object",
         "properties": {}
       }
