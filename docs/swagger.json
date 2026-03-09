@@ -1499,7 +1499,7 @@
         },
         "summary": "Register group attendee",
         "tags": [
-          "AttendeeGroup"
+          "Attendees Group"
         ]
       }
     },
@@ -1513,7 +1513,7 @@
           }
         },
         "tags": [
-          "AttendeeGroup"
+          "Attendees Group"
         ]
       }
     },
@@ -1536,7 +1536,7 @@
           }
         },
         "tags": [
-          "AttendeeGroup"
+          "Attendees Group"
         ]
       },
       "patch": {
@@ -1567,7 +1567,7 @@
           }
         },
         "tags": [
-          "AttendeeGroup"
+          "Attendees Group"
         ]
       },
       "delete": {
@@ -1588,7 +1588,7 @@
           }
         },
         "tags": [
-          "AttendeeGroup"
+          "Attendees Group"
         ]
       }
     }
