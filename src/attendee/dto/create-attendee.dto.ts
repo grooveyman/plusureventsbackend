@@ -23,7 +23,7 @@ export class CreateAttendeeDto {
 
     @ApiProperty({example:'Legon, Accra'})
     @IsString()
-    address: string;
+    residence: string;
 
     @ApiProperty({example:true})
     @IsBoolean()

@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "copy-certs": "cpx \"src/config/certs/**/*\" dist/config/certs",
-    "build": "nest build && npm run copy:certs",
+    "build": "nest build",
     "copy:certs": "mkdir -p dist/config/certs && cp src/config/certs/ca.pem dist/config/certs/ca.pem",
     "vercel-build": "npm run build && NODE_ENV=production npx typeorm migration:run -d dist/database/data-source.js",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -29,6 +29,7 @@
     "migration:run": "typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts"
   },
   "dependencies": {
+    "@nestjs/cli": "^10.4.9",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.3",
     "@nestjs/core": "^11.0.1",
@@ -58,7 +59,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.18.0",
-    "@nestjs/cli": "^10.0.0",
+    "@nestjs/cli": "^10.4.9",
     "@nestjs/schematics": "^11.0.9",
     "@nestjs/testing": "^11.0.1",
     "@types/cookie-parser": "^1.4.10",

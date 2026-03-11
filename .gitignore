@@ -57,3 +57,6 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 .vercel
 
 ca.pem
+Archive.zip
+backendapi.zip
+dist.zip
