@@ -33,7 +33,7 @@ const productionConfig: DataSourceOptions = {
     database: process.env.SDB_NAME,
     entities: [join(process.cwd(), 'dist', '**', '*.entity.js')],
     migrations: [join(process.cwd(), 'dist', 'migrations', '*.js')],
-    synchronize: true,
+    synchronize: false,
     ssl: {
         rejectUnauthorized: false,
         ca: getCACert(),
