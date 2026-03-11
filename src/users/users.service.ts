@@ -8,7 +8,7 @@ import { randomUUID } from 'crypto';
 import { MailService } from '../mail/mail.service';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
-import { ResponseHelper } from 'src/helpers/response.helper';
+import { ResponseHelper } from '../helpers/response.helper';
 import { Response } from 'express';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
