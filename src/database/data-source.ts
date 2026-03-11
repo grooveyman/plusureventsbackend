@@ -5,10 +5,6 @@ import * as fs from 'fs';
 
 dotenv.config();
 
-console.log('NODE_ENV:', JSON.stringify(process.env.NODE_ENV));
-console.log('isLocal:', process.env.NODE_ENV === 'local');
-console.log('DB_HOST:', process.env.DB_PASSWORD);
-
 const isProduction = process.env.NODE_ENV === 'production';
 const isLocal = process.env.NODE_ENV === 'local';
 
@@ -53,7 +49,7 @@ const localConfig: DataSourceOptions = {
     database: process.env.DB_NAME,
     entities: [join(process.cwd(), 'dist', '**', '*.entity.js')],
     migrations: [join(process.cwd(), 'dist', 'migrations', '*.js')],
-    synchronize: true,
+    synchronize: false,
     ssl: false,
 };
 

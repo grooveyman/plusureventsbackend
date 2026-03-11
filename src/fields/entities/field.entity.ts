@@ -1,3 +1,4 @@
+import { Registration } from "@/registrations/entities/registration.entity";
 import { Event } from "../../events/entities/event.entity";
 import { FieldOption } from "../../field_options/entities/field_option.entity";
 import { Timestamp } from "../../helpers/timestamp.entity";
@@ -26,4 +27,5 @@ export class Field extends Timestamp{
     //link to field options
     @OneToMany(() => FieldOption, (field_options) => field_options.field)
     field_options: FieldOption[];
+
 }

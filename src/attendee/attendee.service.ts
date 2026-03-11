@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, MessageEvent } from '@nestjs/common';
 import { CreateAttendeeDto } from './dto/create-attendee.dto';
 import { UpdateAttendeeDto } from './dto/update-attendee.dto';
 import { Repository } from 'typeorm';
@@ -7,6 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { Logger } from 'winston';
 import { MailService } from '../mail/mail.service';
+import { filter, map, Observable, Subject } from 'rxjs';
 
 
 @Injectable()
@@ -15,20 +16,34 @@ export class AttendeeService {
 
   }
   async create(createAttendeeDto: CreateAttendeeDto) {
-   
+
     //check if attendee already registered
     this.logger.log('Creating attendee', AttendeeService.name);
     if (await this.findByEmail(createAttendeeDto.email)) {
       this.logger.error('Failed to create attendee: Attendee already exists');
       throw new Error("Attendee already exists");
-      
+
     }
 
     const attendee = this.attendeeRepository.create(createAttendeeDto);
     this.logger.log(`Registered ${createAttendeeDto.lastname} ${createAttendeeDto.firstname} successfully`, AttendeeService.name);
     //send email
-    await this.mailService.sendWelcomeEmail(attendee.email, attendee.firstname);
-    return await this.attendeeRepository.save(attendee);
+    // await this.mailService.sendWelcomeEmail(attendee.email, attendee.firstname);
+    const saved = await this.attendeeRepository.save(attendee);
+    // console.log(saved);
+    //emit to all listeners
+    this.registrationStream$.next(saved);
+    return saved;
+  }
+
+  private registrationStream$ = new Subject<any>();
+  getRegistrationStream(): Observable<MessageEvent> {
+    console.log('SSE client connected');
+    return this.registrationStream$.pipe(
+      map((registration) => ({
+        data: JSON.stringify(registration)
+      })),
+    );
   }
 
   async findAll() {

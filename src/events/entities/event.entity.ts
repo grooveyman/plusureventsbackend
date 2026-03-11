@@ -1,3 +1,4 @@
+import { Registration } from "../../registrations/entities/registration.entity";
 import { Field } from "../../fields/entities/field.entity";
 import { FormAccess } from "../../form_access/entities/form_access.entity";
 import { Timestamp } from "../../helpers/timestamp.entity";
@@ -61,5 +62,9 @@ export class Event extends Timestamp {
     //link to form access
     @OneToMany(() => FormAccess, (formaccess) => formaccess.event, {nullable: true})
     form_access: FormAccess[];
+    
+    //link to registration
+    @OneToMany(() => Registration, (registration) => registration.event)
+    registration:Registration;
 
 }

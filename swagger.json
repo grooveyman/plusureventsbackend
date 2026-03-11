@@ -15,7 +15,7 @@
         ]
       }
     },
-    "/attendee": {
+    "/api/v1/attendee/register": {
       "post": {
         "operationId": "AttendeeController_create",
         "parameters": [],
@@ -31,13 +31,19 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Attendee created successfully!"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         },
+        "summary": "Register an attendee",
         "tags": [
           "Attendee"
         ]
-      },
+      }
+    },
+    "/api/v1/attendee": {
       "get": {
         "operationId": "AttendeeController_findAll",
         "parameters": [],
@@ -51,7 +57,34 @@
         ]
       }
     },
-    "/attendee/{id}": {
+    "/api/v1/attendee/live": {
+      "get": {
+        "operationId": "AttendeeController_liveRegistrations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "SSE stream — emits a new event each time an attendee registers",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "example": {
+                    "data": "{\"id\":1,\"responses\":{\"1\":\"John Doe\",\"2\":\"john@email.com\"},\"created_at\":\"2026-03-10T10:00:00.000Z\"}"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "summary": "Live stream of new attendee registrations via SSE",
+        "tags": [
+          "Attendee"
+        ]
+      }
+    },
+    "/api/v1/attendee/{id}": {
       "get": {
         "operationId": "AttendeeController_findOne",
         "parameters": [
@@ -126,7 +159,7 @@
         ]
       }
     },
-    "/users": {
+    "/api/v1/users/create": {
       "post": {
         "operationId": "UsersController_create",
         "parameters": [],
@@ -152,30 +185,9 @@
         "tags": [
           "Users"
         ]
-      },
-      "get": {
-        "operationId": "UsersController_findAll",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Users retrieved successfully"
-          },
-          "404": {
-            "description": "No records found"
-          }
-        },
-        "security": [
-          {
-            "bearer": []
-          }
-        ],
-        "summary": "Get all users",
-        "tags": [
-          "Users"
-        ]
       }
     },
-    "/users/login": {
+    "/api/v1/users/login": {
       "post": {
         "operationId": "UsersController_login",
         "parameters": [],
@@ -203,7 +215,7 @@
         ]
       }
     },
-    "/users/verifyEmail/{token}": {
+    "/api/v1/users/verifyEmail/{token}": {
       "get": {
         "operationId": "UsersController_verifyEmail",
         "parameters": [
@@ -226,7 +238,30 @@
         ]
       }
     },
-    "/users/{id}": {
+    "/api/v1/users": {
+      "get": {
+        "operationId": "UsersController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Users retrieved successfully"
+          },
+          "404": {
+            "description": "No records found"
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get all users",
+        "tags": [
+          "Users"
+        ]
+      }
+    },
+    "/api/v1/users/{id}": {
       "get": {
         "operationId": "UsersController_findOne",
         "parameters": [
@@ -301,7 +336,7 @@
         ]
       }
     },
-    "/events": {
+    "/api/v1/events/create": {
       "post": {
         "operationId": "EventsController_create",
         "parameters": [],
@@ -317,13 +352,19 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "Event created successfully"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         },
+        "summary": "Create a new event",
         "tags": [
           "Events"
         ]
-      },
+      }
+    },
+    "/api/v1/events/search/{search}": {
       "get": {
         "operationId": "EventsController_findAll",
         "parameters": [],
@@ -337,7 +378,7 @@
         ]
       }
     },
-    "/events/{id}": {
+    "/api/v1/events/{id}": {
       "get": {
         "operationId": "EventsController_findOne",
         "parameters": [
@@ -412,7 +453,46 @@
         ]
       }
     },
-    "/tickets": {
+    "/api/v1/events/uploadProfilePicture": {
+      "post": {
+        "operationId": "EventsController_uploadProfilePicture",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Events"
+        ]
+      }
+    },
+    "/api/v1/tickets": {
       "post": {
         "operationId": "TicketsController_create",
         "parameters": [],
@@ -448,7 +528,7 @@
         ]
       }
     },
-    "/tickets/{id}": {
+    "/api/v1/tickets/{id}": {
       "get": {
         "operationId": "TicketsController_findOne",
         "parameters": [
@@ -523,7 +603,7 @@
         ]
       }
     },
-    "/feedbacks": {
+    "/api/v1/feedbacks": {
       "post": {
         "operationId": "FeedbacksController_create",
         "parameters": [],
@@ -559,7 +639,7 @@
         ]
       }
     },
-    "/feedbacks/{id}": {
+    "/api/v1/feedbacks/{id}": {
       "get": {
         "operationId": "FeedbacksController_findOne",
         "parameters": [
@@ -634,7 +714,7 @@
         ]
       }
     },
-    "/broadcasts": {
+    "/api/v1/broadcasts": {
       "post": {
         "operationId": "BroadcastsController_create",
         "parameters": [],
@@ -670,7 +750,7 @@
         ]
       }
     },
-    "/broadcasts/{id}": {
+    "/api/v1/broadcasts/{id}": {
       "get": {
         "operationId": "BroadcastsController_findOne",
         "parameters": [
@@ -745,7 +825,7 @@
         ]
       }
     },
-    "/accounts": {
+    "/api/v1/accounts": {
       "post": {
         "operationId": "AccountsController_create",
         "parameters": [],
@@ -781,7 +861,7 @@
         ]
       }
     },
-    "/accounts/{id}": {
+    "/api/v1/accounts/{id}": {
       "get": {
         "operationId": "AccountsController_findOne",
         "parameters": [
@@ -856,7 +936,7 @@
         ]
       }
     },
-    "/transactions": {
+    "/api/v1/transactions": {
       "post": {
         "operationId": "TransactionsController_create",
         "parameters": [],
@@ -892,7 +972,7 @@
         ]
       }
     },
-    "/transactions/{id}": {
+    "/api/v1/transactions/{id}": {
       "get": {
         "operationId": "TransactionsController_findOne",
         "parameters": [
@@ -966,6 +1046,605 @@
           "Transactions"
         ]
       }
+    },
+    "/api/v1/fields/create": {
+      "post": {
+        "operationId": "FieldsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Form field created successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "summary": "Create a new field",
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/api/v1/fields": {
+      "get": {
+        "operationId": "FieldsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/api/v1/fields/{id}": {
+      "get": {
+        "operationId": "FieldsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Fields"
+        ]
+      },
+      "patch": {
+        "operationId": "FieldsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFieldDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Fields"
+        ]
+      },
+      "delete": {
+        "operationId": "FieldsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Fields"
+        ]
+      }
+    },
+    "/api/v1/field-options": {
+      "post": {
+        "operationId": "FieldOptionsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFieldOptionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      },
+      "get": {
+        "operationId": "FieldOptionsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      }
+    },
+    "/api/v1/field-options/{id}": {
+      "get": {
+        "operationId": "FieldOptionsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      },
+      "patch": {
+        "operationId": "FieldOptionsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFieldOptionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      },
+      "delete": {
+        "operationId": "FieldOptionsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FieldOptions"
+        ]
+      }
+    },
+    "/api/v1/form-access": {
+      "post": {
+        "operationId": "FormAccessController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateFormAccessDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      },
+      "get": {
+        "operationId": "FormAccessController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      }
+    },
+    "/api/v1/form-access/{id}": {
+      "get": {
+        "operationId": "FormAccessController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      },
+      "patch": {
+        "operationId": "FormAccessController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFormAccessDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      },
+      "delete": {
+        "operationId": "FormAccessController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "FormAccess"
+        ]
+      }
+    },
+    "/api/v1/registrations/register": {
+      "post": {
+        "operationId": "RegistrationsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRegistrationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      }
+    },
+    "/api/v1/registrations": {
+      "get": {
+        "operationId": "RegistrationsController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      }
+    },
+    "/api/v1/registrations/{id}": {
+      "get": {
+        "operationId": "RegistrationsController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      },
+      "patch": {
+        "operationId": "RegistrationsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRegistrationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      },
+      "delete": {
+        "operationId": "RegistrationsController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Registrations"
+        ]
+      }
+    },
+    "/api/v1/attendee-group/register": {
+      "post": {
+        "operationId": "AttendeeGroupController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAttendeeGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Registered group attendance successfully"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        },
+        "summary": "Register group attendee",
+        "tags": [
+          "Attendees Group"
+        ]
+      }
+    },
+    "/api/v1/attendee-group/live": {
+      "get": {
+        "operationId": "AttendeeGroupController_liveRegistrations",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "SSE stream — emits a new event each time an attendee group registers",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "example": {
+                    "data": "{\"id\":1,\"responses\":{\"1\":\"Group name\",\"2\":\"32\"},\"created_at\":\"2026-03-10T10:00:00.000Z\"}"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "summary": "Live stream of new attendee group registrations",
+        "tags": [
+          "Attendees Group"
+        ]
+      }
+    },
+    "/api/v1/attendee-group": {
+      "get": {
+        "operationId": "AttendeeGroupController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Attendees Group"
+        ]
+      }
+    },
+    "/api/v1/attendee-group/{id}": {
+      "get": {
+        "operationId": "AttendeeGroupController_findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Attendees Group"
+        ]
+      },
+      "patch": {
+        "operationId": "AttendeeGroupController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAttendeeGroupDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Attendees Group"
+        ]
+      },
+      "delete": {
+        "operationId": "AttendeeGroupController_remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Attendees Group"
+        ]
+      }
     }
   },
   "info": {
@@ -975,7 +1654,12 @@
     "contact": {}
   },
   "tags": [],
-  "servers": [],
+  "servers": [
+    {
+      "url": "https://plusureventsbackend.vercel.app/",
+      "description": "Production"
+    }
+  ],
   "components": {
     "securitySchemes": {
       "cookie": {
@@ -987,7 +1671,40 @@
     "schemas": {
       "CreateAttendeeDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "lastname": {
+            "type": "string",
+            "example": "Johnson"
+          },
+          "firstname": {
+            "type": "string",
+            "example": "Kelvin"
+          },
+          "email": {
+            "type": "string",
+            "example": "example@gmail.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "2022222222"
+          },
+          "residence": {
+            "type": "string",
+            "example": "Legon, Accra"
+          },
+          "firstTime": {
+            "type": "boolean",
+            "example": true
+          }
+        },
+        "required": [
+          "lastname",
+          "firstname",
+          "email",
+          "phone",
+          "residence",
+          "firstTime"
+        ]
       },
       "UpdateAttendeeDto": {
         "type": "object",
@@ -1030,7 +1747,55 @@
       },
       "CreateEventDto": {
         "type": "object",
-        "properties": {}
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "IYES 2026"
+          },
+          "location": {
+            "type": "string",
+            "example": "UPSA Auditorium, Accra"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is the most influential youth program"
+          },
+          "group": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "start_date": {
+            "type": "string",
+            "example": "2026-03-12"
+          },
+          "end_date": {
+            "type": "string",
+            "example": "2026-03-14"
+          },
+          "expiry": {
+            "type": "string",
+            "example": "2026-03-14"
+          },
+          "no_attendee": {
+            "type": "number",
+            "example": "2000"
+          },
+          "user": {
+            "type": "object",
+            "example": ""
+          }
+        },
+        "required": [
+          "name",
+          "location",
+          "description",
+          "group",
+          "start_date",
+          "end_date",
+          "expiry",
+          "no_attendee",
+          "user"
+        ]
       },
       "UpdateEventDto": {
         "type": "object",
@@ -1075,6 +1840,156 @@
       "UpdateTransactionDto": {
         "type": "object",
         "properties": {}
+      },
+      "UpdateFieldDto": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "example": "Surname"
+          },
+          "field_type": {
+            "type": "string",
+            "example": "text"
+          },
+          "isRequired": {
+            "type": "boolean",
+            "example": true
+          },
+          "event": {
+            "type": "object",
+            "example": "Surname"
+          },
+          "fieldOptions": {
+            "example": [],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CreateFieldOptionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateFieldOptionDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateFormAccessDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateFormAccessDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "CreateRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "number",
+            "example": 2
+          },
+          "responses": {
+            "type": "object",
+            "example": {
+              "1": "John Doe",
+              "2": "john@email.com",
+              "3": "M"
+            },
+            "description": "Key is field_id, value is the response"
+          }
+        },
+        "required": [
+          "event_id",
+          "responses"
+        ]
+      },
+      "UpdateRegistrationDto": {
+        "type": "object",
+        "properties": {
+          "event_id": {
+            "type": "number",
+            "example": 2
+          },
+          "responses": {
+            "type": "object",
+            "example": {
+              "1": "John Doe",
+              "2": "john@email.com",
+              "3": "M"
+            },
+            "description": "Key is field_id, value is the response"
+          }
+        }
+      },
+      "CreateAttendeeGroupDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": ""
+          },
+          "address": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_name": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_phone": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_email": {
+            "type": "string",
+            "example": ""
+          },
+          "number_heads": {
+            "type": "number",
+            "example": ""
+          }
+        },
+        "required": [
+          "name",
+          "address",
+          "contact_person_name",
+          "contact_person_phone",
+          "contact_person_email",
+          "number_heads"
+        ]
+      },
+      "UpdateAttendeeGroupDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": ""
+          },
+          "address": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_name": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_phone": {
+            "type": "string",
+            "example": ""
+          },
+          "contact_person_email": {
+            "type": "string",
+            "example": ""
+          },
+          "number_heads": {
+            "type": "number",
+            "example": ""
+          }
+        }
       }
     }
   }

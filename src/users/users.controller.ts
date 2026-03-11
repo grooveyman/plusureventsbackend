@@ -33,12 +33,22 @@ export class UsersController {
   @ApiResponse({ status: 200, description: 'User logged in successfully' })
   @ApiResponse({ status: 401, description: 'Invalid Credentials' })
   async login(@Res() res: Response, @Body() loginUserDto: LoginUserDto) {
-    console.log("entering controller");
-    const result = await this.usersService.login(loginUserDto.email, loginUserDto.password, res);
-    if (!result.success) {
-      return ResponseHelper.error(res, result.message, result.status);
+    try {
+      console.log("entering controller");
+      const result = await this.usersService.login(loginUserDto.email, loginUserDto.password, res);
+      if (!result.success) {
+        return ResponseHelper.error(res, result.message, result.status);
+      }
+
+      this.logger.error('Successfully logged in ');
+      return ResponseHelper.success(res, result.message, result.data, HttpStatus.OK);
+
+    } catch (err: any) {
+      this.logger.error('Error logging in user ' + err.message);
+      return ResponseHelper.error(res, err.message, HttpStatus.INTERNAL_SERVER_ERROR);
+
     }
-    return ResponseHelper.success(res, result.message, result.data, HttpStatus.OK);
+
   }
 
   @Get('verifyEmail/:token')

@@ -12,12 +12,15 @@ export class Attendee extends Timestamp {
     @Column({type: 'varchar', length: 255})
     firstname: string;
 
-    @Column({type: 'varchar', length: 255, unique: true})
+    @Column({type: 'varchar', length: 255, unique: true,  nullable:true})
     email: string;
 
-    @Column({type: 'varchar', length: 255})
+    @Column({type: 'varchar', length: 255, unique: true, nullable:false})
     phone: string;
 
-    @Column({type: 'varchar', length: 255})
+    @Column({type: 'varchar', length: 255, nullable:false})
     residence: string;
+
+    @Column({type:"boolean", nullable:true})
+    firstTime: boolean; 
 }

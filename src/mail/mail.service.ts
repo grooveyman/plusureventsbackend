@@ -42,12 +42,25 @@ export class MailService implements OnModuleInit {
     async sendWelcomeEmail(to: string, name: string) {
         try {
             await this.transporter.sendMail({
-                from: `"No Reply" <${this.configService.get('MAIL_FROM')}>`,
+                from: `"IYES 2026" <${this.configService.get('MAIL_FROM')}>`,
                 to,
                 subject: 'Welcome!',
                 html: `
-          <h1>Welcome ${name}!</h1>
-          <p>Thank you for registering.</p>
+          <div class="container">
+    <div class="header">
+      <h1>Welcome!</h1>
+    </div>
+    <div class="content">
+      <p>Hi ${name},</p>
+      <h2>Welcome to IYES 2026</h2>
+      <p>We're thrilled to have you join us for IYES 2026! Your registration has been confirmed. </p>
+      <p>Have a wonderful time and do well to share your experience on social media and tag us <strong>@iyesglobal!</strong></p>
+      <p>Thank you for registering. We're glad to host you!</p>
+    </div>
+    <div class="footer">
+      <p>© 2026 IYES Ghana. All rights reserved.</p>
+    </div>
+  </div>
         `,
             });
             this.logger.log(`Welcome email sent to ${to}`, MailService.name);

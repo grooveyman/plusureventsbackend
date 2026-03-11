@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <div id="events"></div>
+  <script>
+    const es = new EventSource('http://localhost:9000/api/v1/attendee/live');
+    
+    es.onmessage = (e) => {
+      console.log('New event:', e.data);
+      document.getElementById('events').innerHTML += `<p>${e.data}</p>`;
+    };
+
+    es.onopen = () => console.log('✅ Connected');
+    es.onerror = (e) => console.error('❌ Error', e);
+  </script>
+</body>
+</html>

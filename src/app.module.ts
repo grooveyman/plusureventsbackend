@@ -23,6 +23,8 @@ import { FieldsModule } from './fields/fields.module';
 import { FieldOptionsModule } from './field_options/field_options.module';
 import { FormAccessModule } from './form_access/form_access.module';
 import { dataSourceOptions } from './database/data-source';
+import { RegistrationsModule } from './registrations/registrations.module';
+import { AttendeeGroupModule } from './attendee_group/attendee_group.module';
 
 @Module({
   imports: [
@@ -63,6 +65,8 @@ import { dataSourceOptions } from './database/data-source';
     FieldsModule,
     FieldOptionsModule,
     FormAccessModule,
+    RegistrationsModule,
+    AttendeeGroupModule,
   ],
   controllers: [AppController],
   providers: [AppService],
@@ -70,21 +74,21 @@ import { dataSourceOptions } from './database/data-source';
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer.apply(LoggerMiddleware).forRoutes('*');
-    consumer
-      .apply(JwtMiddleware)
-      .exclude(
-        { path: '/users/(.*)', method: RequestMethod.ALL },
-        { path: '/', method: RequestMethod.GET },
-      )
-      .forRoutes('*');
-    consumer
-      .apply(EmailVerificationMiddleware)
-      .exclude(
-        { path: '/users/verifyEmail/*', method: RequestMethod.ALL },
-        { path: '/users/create', method: RequestMethod.POST },
-        { path: '/users/login', method: RequestMethod.POST },
-        { path: '/', method: RequestMethod.GET },
-      )
-      .forRoutes('*');
+    // consumer
+    //   .apply(JwtMiddleware)
+    //   .exclude(
+    //     { path: '/users/(.*)', method: RequestMethod.ALL },
+    //     { path: '/', method: RequestMethod.GET },
+    //   )
+    //   .forRoutes('*');
+    // consumer
+    //   .apply(EmailVerificationMiddleware)
+    //   .exclude(
+    //     { path: '/users/verifyEmail/*', method: RequestMethod.ALL },
+    //     { path: '/users/create', method: RequestMethod.POST },
+    //     { path: '/users/login', method: RequestMethod.POST },
+    //     { path: '/', method: RequestMethod.GET },
+    //   )
+    //   .forRoutes('*');
   }
 }

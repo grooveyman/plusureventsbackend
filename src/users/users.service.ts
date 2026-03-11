@@ -51,7 +51,7 @@ export class UsersService {
      await this.mailService.sendVerificationEmail(newUser.email, newUser.name, token);
     this.logger.log("info", `Created user with id: ${newUser.id} successfully`);
     return {success:true, message:'Created user successfully', data:newUser};
-  }
+  } 
 
   async verifyEmail(token: string){
     const user = await this.userRepository.findOne({where: {verifyToken: token}});
@@ -105,7 +105,7 @@ export class UsersService {
         httpOnly: true,
         secure: this.configService.get('NODE_ENV') === 'production',
         sameSite: 'strict',
-        maxAge:   30 * 60 * 1000, // 30 minutes in milliseconds
+        maxAge:   7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
       });
 
       //return response

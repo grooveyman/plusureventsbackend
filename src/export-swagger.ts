@@ -4,16 +4,19 @@ import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as fs from 'fs';
 import express from 'express';
 import { ExpressAdapter } from "@nestjs/platform-express";
+import { join } from "path";
 
 async function exportSwagger() {
+
+    
     const server = express();
 
     const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
         logger: false
     });
 
-    app.setGlobalPrefix('api/v1', { exclude:['/']});
-    
+    app.setGlobalPrefix('api/v1', { exclude: ['/'] });
+
 
     const config = new DocumentBuilder().setTitle('PlusUrEvents Backend').setDescription('API Documentation for PlusUrEvents application').setVersion('1.0').addCookieAuth('access_token').addServer('https://plusureventsbackend.vercel.app/', 'Production').build();
 
@@ -21,7 +24,8 @@ async function exportSwagger() {
 
 
     const document = SwaggerModule.createDocument(app, config);
-    fs.writeFileSync('./swagger.json', JSON.stringify(document, null, 2));
+    const outputPath = join(process.cwd(), 'swagger.json');
+    fs.writeFileSync(outputPath, JSON.stringify(document, null, 2));
     console.log('Swagger JSON exported successfully');
     await app.close();
     process.exit(0);

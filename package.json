@@ -24,7 +24,9 @@
     "export:swagger": "ts-node src/export-swagger.ts",
     "docs:publish": "npm run build && npm run export:swagger && npm run docs:copy && npm run docs:push",
     "docs:copy": "cp swagger.json docs/swagger.json",
-    "docs:push": "git add docs/swagger.json && git commit -m \"chore: update API docs\" && git push origin HEAD"
+    "docs:push": "git add docs/swagger.json && git diff --cached --quiet || git commit -m \"chore: update API docs\" && git push origin HEAD",
+    "migration:generate": "typeorm-ts-node-commonjs migration:generate src/migrations/Migration -d src/database/data-source.ts",
+    "migration:run": "typeorm-ts-node-commonjs migration:run -d src/database/data-source.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
